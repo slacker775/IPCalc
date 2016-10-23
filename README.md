@@ -13,5 +13,5 @@ This code is heavily based on the IPCalc Python library (https://github.com/tehm
 Install the module:
 
 ```sh
-$ php composer.phar require slacker775/IPCalc
+$ php composer.phar require slacker775/ipcalc
 ```
