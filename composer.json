@@ -2,7 +2,7 @@
     "name": "slacker775/ipcalc",
     "description": "IP Address Calculation Classes",
     "type": "library",
-    "license": "GPL",
+    "license": "GPL-3.0-or-later",
     "authors": [
         {
             "name": "David Hollis",

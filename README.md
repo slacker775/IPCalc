@@ -5,7 +5,7 @@ This code is heavily based on the IPCalc Python library (https://github.com/tehm
 
 ## Requirements
 
-- PHP 5.6, PHP 7.0 or higher
+- PHP 7.4 or higher
 
 ## Installation
 
