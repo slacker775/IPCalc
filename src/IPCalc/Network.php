@@ -1,11 +1,12 @@
-<?php
+<?php declare(strict_types=1);
+
 namespace IPCalc;
 
 use IPCalc\Address;
 
 class Network extends Address implements \Iterator
 {
-    protected $postition;
+    protected int $postition;
     
     public function __construct($address, $netmask = null, $version = Address::IPv4)
     {
@@ -14,20 +15,17 @@ class Network extends Address implements \Iterator
     }
     
     /**
-     * Return the network Netmask as an Address object
-     * 
-     * @return 
+     * Return the network Netmask as an Address object*
      */
-    public function netmask()
+    public function netmask(): Address
     {
         return new Address($this->netmaskLong(), null, $this->getVersion());
     }
     
     /**
      * Get the netmask as an integer
-     * @return number
      */
-    public function netmaskLong()
+    public function netmaskLong(): int
     {
         if($this->getVersion() == Address::IPv4)
             return (Address::MAX_IPV4 >> (32 - $this->mask)) << (32 - $this->mask);
@@ -37,10 +35,9 @@ class Network extends Address implements \Iterator
     
     /**
      * Return this network as an Address object
-     * 
-     * @return \IP\Address
+     *
      */
-    public function network()
+    public function network(): Address
     {
         return new Address($this->networkLong(), null, $this->getVersion());
     }
@@ -48,9 +45,8 @@ class Network extends Address implements \Iterator
     /**
      * Return the network address as a longint
      * 
-     * @return number
      */
-    public function networkLong()
+    public function networkLong(): int
     {
         return $this->ip & $this->netmaskLong();
     }
@@ -58,9 +54,8 @@ class Network extends Address implements \Iterator
     /**
      * Get the network broadcast address
      * 
-     * @return \IP\Address
      */
-    public function broadcast()
+    public function broadcast(): Address
     {
         return new Address($this->broadcastLong(), null, $this->getVersion());
     }
@@ -68,9 +63,8 @@ class Network extends Address implements \Iterator
     /**
      * Return the broadcast address for this network as a longint
      * 
-     * @return number
      */
-    public function broadcastLong()
+    public function broadcastLong(): int
     {
         if($this->getVersion() == Address::IPv4)
             return $this->networkLong() | (Address::MAX_IPV4 - $this->netmaskLong());
@@ -82,9 +76,8 @@ class Network extends Address implements \Iterator
      * Determine if passed network is within this network
      * 
      * @param string|Address $other
-     * @return boolean
      */
-    public function checkCollision($other)
+    public function checkCollision($other): bool
     {
         $othernet = new Network($other);
         
@@ -95,9 +88,8 @@ class Network extends Address implements \Iterator
     /**
      * 
      * @param string|Address $address
-     * @return boolean
      */
-    public function contains($address)
+    public function contains($address): bool
     {
         return $this->checkCollision($address);
     }
@@ -105,9 +97,8 @@ class Network extends Address implements \Iterator
     /**
      * Return the number of host addresses available within this network
      * 
-     * @return number
      */
-    public function size()
+    public function size(): int
     {
         $base = $this->getVersion() == Address::IPv4 ? 32 : 128;
         $base -= $this->mask;
@@ -117,9 +108,8 @@ class Network extends Address implements \Iterator
     /**
      * Return the first available host address in this network
      * 
-     * @return \IP\Network|\IP\Address
      */
-    public function firstHost()
+    public function firstHost(): Address
     {
         if(($this->getVersion() == Address::IPv4 && $this->mask > 30) || ($this->version == Address::IPv6 && $this->mask > 126))
             return $this;
@@ -130,15 +120,14 @@ class Network extends Address implements \Iterator
     /**
      * Return the last available host address in this network
      * 
-     * @return \IP\Network|\IP\Address
      */
-    public function lastHost()
+    public function lastHost(): Address
     {
         if (($this->getVersion() == Address::IPv4 && $this->mask == 32) || ($this->version == Address::IPv6 && $this->mask == 128)) {
             return $this;
         } else 
             if (($this->getVersion() == Address::IPv4 && $this->mask == 31) || ($this->getVersion() == Address::IPv6 && $this->mask == 127)) {
-                return new Address($this + 1, null, $this->getVersion());
+                return new Address($this->ip + 1, null, $this->getVersion());
             } else {
                 return new Address($this->broadcastLong() - 1, null, $this->getVersion());
             }
@@ -155,7 +144,7 @@ class Network extends Address implements \Iterator
      * {@inheritDoc}
      * @see Iterator::current()
      */
-    public function current()
+    public function current(): Address
     {
         return new Address($this->networkLong() + $this->position, $this->mask, $this->getVersion());
     }
@@ -165,7 +154,7 @@ class Network extends Address implements \Iterator
      * {@inheritDoc}
      * @see Iterator::next()
      */
-    public function next()
+    public function next(): Address
     {
         return new Address($this->networkLong() + $this->position++, $this->mask, $this->getVersion());
     }
@@ -185,9 +174,9 @@ class Network extends Address implements \Iterator
      * {@inheritDoc}
      * @see Iterator::valid()
      */
-    public function valid()
+    public function valid(): bool
     {
-        if($this->position >= $this->size() - 1 || $this->position <= 0)
+        if($this->position > $this->size() || $this->position <= 0)
             return false;
         return true;
     }
@@ -197,7 +186,7 @@ class Network extends Address implements \Iterator
      * {@inheritDoc}
      * @see Iterator::key()
      */
-    public function key()
+    public function key(): int
     {
         return $this->position;
     }   

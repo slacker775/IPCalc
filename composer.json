@@ -17,8 +17,10 @@
     "scripts": {
         "test": "phpunit"
     },
-    "require": {},
+    "require": {
+        "php": ">=7.4"
+    },
     "require-dev": {
-        "phpunit/php-code-coverage": "^4.0"
+        "phpunit/php-code-coverage": "^9.2"
     }
 }
