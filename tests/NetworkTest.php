@@ -85,23 +85,27 @@ class NetworkTest extends TestCase
         $this->assertEquals(1, $net->key());
         $this->assertTrue($net->valid());
 
-        $network = $net->next();
-        $this->assertEquals('10.1.1.1', $network->getDq());
+        $net->next();
+        $network = $net->current();
+        $this->assertEquals('10.1.1.2', $network->getDq());
         $this->assertEquals(2, $net->key());
         $this->assertTrue($net->valid());
 
-        $network = $net->next();
-        $this->assertEquals('10.1.1.2', $network->getDq());
+        $net->next();
+        $network = $net->current();
+        $this->assertEquals('10.1.1.3', $network->getDq());
         $this->assertEquals(3, $net->key());
         $this->assertTrue($net->valid());
 
-        $network = $net->next();
-        $this->assertEquals('10.1.1.3', $network->getDq());
+        $net->next();
+        $network = $net->current();
+        $this->assertEquals('10.1.1.4', $network->getDq());
         $this->assertEquals(4, $net->key());
         $this->assertTrue($net->valid());
 
-        $network = $net->next();
-        $this->assertEquals('10.1.1.4', $network->getDq());
+        $net->next();
+        $network = $net->current();
+        $this->assertEquals('10.1.1.5', $network->getDq());
         $this->assertEquals(5, $net->key());
         $this->assertFalse($net->valid());
     }

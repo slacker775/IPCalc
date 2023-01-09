@@ -6,7 +6,7 @@ use IPCalc\Address;
 
 class Network extends Address implements \Iterator
 {
-    protected int $postition;
+    protected int $position;
     
     public function __construct($address, $netmask = null, $version = Address::IPv4)
     {
@@ -154,9 +154,9 @@ class Network extends Address implements \Iterator
      * {@inheritDoc}
      * @see Iterator::next()
      */
-    public function next(): Address
+    public function next(): void
     {
-        return new Address($this->networkLong() + $this->position++, $this->mask, $this->getVersion());
+        ++$this->position;
     }
     
     /**
@@ -164,7 +164,7 @@ class Network extends Address implements \Iterator
      * {@inheritDoc}
      * @see Iterator::rewind()
      */
-    public function rewind()
+    public function rewind(): void
     {
         $this->position = 1;
     }

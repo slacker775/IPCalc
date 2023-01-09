@@ -70,4 +70,16 @@ class AddressTest extends TestCase
         $this->assertEquals('192.168.1.5', (string)$b);
     }
 
+    /**
+     * Verify that we aren't parsing octal addresses in
+     * the wrong way
+     */
+    public function testOctalAddress()
+    {
+        $octalAddr = new Address('010.010.010.010');
+        $regAddr = new Address('8.8.8.8');
+        $this->assertFalse($octalAddr->eq($regAddr));
+        $this->assertTrue($octalAddr->gt($regAddr));
+    }
+
 }
